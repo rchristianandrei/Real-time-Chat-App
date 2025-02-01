@@ -1,0 +1,33 @@
+.dropdown-parent {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-background {
+  background-color: rgba(255, 255, 255, 0.192);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.dropdown-list {
+  padding: 20px;
+  border-radius: 20px;
+  background-color: rgb(36, 36, 36);
+  border: 1px solid whitesmoke;
+  position: absolute;
+  right: 0;
+  bottom: -1;
+  cursor: default;
+}
+
+.dropdown-list li {
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.dropdown-list li:hover {
+  opacity: 0.5;
+}
