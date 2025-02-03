@@ -15,7 +15,6 @@ router.post("/login", (req, res) => {
   if (!user) return res.sendStatus(404);
 
   req.session.user = user;
-
   return res.status(200).send(user);
 });
 

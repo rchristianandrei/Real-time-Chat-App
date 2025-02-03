@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import session from "express-session";
 
 import routes from "./routes.js";
@@ -8,6 +9,11 @@ const port = 3000;
 
 // Middleware to parse JSON requests
 app.use(express.json());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 app.use(
   session({
     secret: "asdiocjamwio2482394$@#$@#",
