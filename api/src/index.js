@@ -1,4 +1,6 @@
 import express from "express";
+import session from "express-session";
+
 import routes from "./routes.js";
 
 const app = express();
@@ -6,6 +8,14 @@ const port = 3000;
 
 // Middleware to parse JSON requests
 app.use(express.json());
+app.use(
+  session({
+    secret: "asdiocjamwio2482394$@#$@#",
+    saveUninitialized: false,
+    resave: false,
+    cookie: { maxAge: 60000 * 60 },
+  })
+);
 
 app.use(routes);
 
