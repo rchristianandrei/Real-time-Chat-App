@@ -1,4 +1,5 @@
 import express from "express";
+import routes from "./routes.js";
 
 const app = express();
 const port = 3000;
@@ -6,10 +7,7 @@ const port = 3000;
 // Middleware to parse JSON requests
 app.use(express.json());
 
-// Define a simple route
-app.get("/", (req, res) => {
-  res.send("Hello, Express!");
-});
+app.use(routes);
 
 // Start the server
 app.listen(port, () => {
