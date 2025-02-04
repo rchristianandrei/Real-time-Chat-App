@@ -1,14 +1,13 @@
 import { Router } from "express";
 
-export const route = "/api/user";
+import authGuard from "../middlewares/authGuard.js";
+import { users } from "../utils/userConstant.js";
+
+export const route = "/api/users";
 export const router = Router();
 
-router.get("/", (req, res) => {
-  return res.send("Get all users");
-});
-
-router.post("/register", (req, res) => {
-  return res.send("Register endpoint");
+router.get("/", authGuard(), (req, res) => {
+  return res.send(users);
 });
 
 export default { route, router };
