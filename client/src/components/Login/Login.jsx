@@ -24,7 +24,7 @@ export default function Login(){
             body: JSON.stringify({username: username, password: password})
         }).then(res => res.json())
         .then(res => {
-            sessionStorage.setItem("token", res.token)
+            sessionStorage.setItem("user", res)
             setShowError(false)
             navigate("/")
         })

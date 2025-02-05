@@ -5,7 +5,51 @@ export default function Register(){
 
     function onSubmit(event) {
         event.preventDefault()
-        console.log("Submit")
+
+        // Validate
+        const username = event.target.username.value
+        const displayName = event.target.displayName.value
+        const password = event.target.password.value
+        const confirmPassword = event.target.confirmPassword.value
+
+        let valid = true
+
+        if(!username){
+            console.error("Username cannot be empty")
+            valid = false
+        }
+
+        if(!displayName){
+            console.error("Username cannot be empty")
+            valid = false
+        }
+
+        if(!password){
+            console.log("Password cannot be empty")
+            valid = false
+        }
+        else if(password !== confirmPassword){
+            console.error("Passwords do not match")
+            valid = false
+        }
+
+        if(!valid) return
+
+        const user = {
+            username: username,
+            displayName: displayName,
+            password: password
+        }
+
+        fetch("http://localhost:3000/api/auth/register", {
+            method: "post",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        }).then(res => res.json())
+        .then(res =>console.log(res))
+        .catch(reason => console.log(reason))
     }
 
     return(<>
@@ -19,13 +63,18 @@ export default function Register(){
                 </div>
 
                 <div className={style.formControl}>
-                    <label htmlFor="password1">Password</label>
-                    <input type="password" id="password1" name="password1"/>
+                    <label htmlFor="displayName">Display Name</label>
+                    <input type="text" id="displayName" name="displayName"/>
                 </div>
 
                 <div className={style.formControl}>
-                    <label htmlFor="password2">Password Again</label>
-                    <input type="password" id="password2" name="password2"/>
+                    <label htmlFor="password">Password</label>
+                    <input type="password" id="password" name="password"/>
+                </div>
+
+                <div className={style.formControl}>
+                    <label htmlFor="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword"/>
                 </div>
 
                 <div className={style.buttons}>
