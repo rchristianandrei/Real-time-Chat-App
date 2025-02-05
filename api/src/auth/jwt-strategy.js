@@ -2,7 +2,7 @@ import passport from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 
 import key from "./secretKey.js";
-import { users } from "../utils/userConstant.js";
+import UserModel from "../database/user.js";
 
 export default passport.use(
   new Strategy(
@@ -10,8 +10,8 @@ export default passport.use(
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: key,
     },
-    (payload, done) => {
-      const user = users.find((u) => u.id === payload.id);
+    async (payload, done) => {
+      const user = await UserModel.findById(payload.id);
 
       return user ? done(null, user) : done("Invalid Token", null);
     }

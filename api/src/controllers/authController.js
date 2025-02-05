@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 
 import key from "../auth/secretKey.js";
 import UserModel from "../database/user.js";
-import { users } from "../utils/userConstant.js";
 
 export const route = "/api/auth";
 export const router = Router();
@@ -17,7 +16,6 @@ router.post("/login", async (req, res) => {
   if (!user || !(await bcrypt.compare(password, user.password))) {
     return res.status(404).send("user is not available");
   }
-
   const token = jwt.sign({ id: user.id }, key, { expiresIn: "1h" });
   return res
     .status(200)
