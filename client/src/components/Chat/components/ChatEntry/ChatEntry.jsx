@@ -1,6 +1,6 @@
 import style from "./ChatEntry.module.css"
 
-export default function ChatEntry(){
+export default function ChatEntry(props){
 
     return(
         <div className={style.chatEntry}>
