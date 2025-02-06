@@ -1,5 +1,6 @@
 import { useContext, useState } from "react"
-import "./Header.css"
+
+import style from "./Header.module.css"
 import { GlobalContext } from "../../../../contexts/globalContext"
 
 export default function Header(){
@@ -9,17 +10,18 @@ export default function Header(){
 
     function onLogout(){
         globalContext.setUser(null)
+        sessionStorage.removeItem("user")
     }
 
     return(
         <>
-            <div className="header">
+            <div className={style.header}>
                 <div>Real-time Chat App</div>
-                {showDropdown && <div className="dropdown-background" onClick={() => setShowDropdown(false)}></div>}
-                <div className="dropdown-parent" onClick={() => {setShowDropdown(true)}}>
+                {showDropdown && <div className={style.dropdownBackground} onClick={() => setShowDropdown(false)}></div>}
+                <div className={style.dropdownParent} onClick={() => {setShowDropdown(true)}}>
                     {globalContext.user && <span>{globalContext.user.displayName}</span>}
                     {showDropdown && 
-                    <ul className="dropdown-list">
+                    <ul className={style.dropdownList}>
                         <li>Profile</li>
                         <li onClick={onLogout}>Logout</li>
                     </ul>}

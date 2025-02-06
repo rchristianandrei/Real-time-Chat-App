@@ -5,30 +5,19 @@
   height: 100vh;
 }
 
-.header {
-  font-size: 2rem;
-  height: 100%;
-  grid-column: span 2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0px 30px;
-  border-bottom: 1px solid whitesmoke;
-}
-
-.chat-side-bar {
+.chatSideBar {
   height: 100%;
   border-right: 1px solid whitesmoke;
   display: none;
 }
 
 @media only screen and (min-width: 768px) {
-  .parent-md {
+  .parentMd {
     grid-template-columns: 300px 1fr;
     grid-template-rows: 100px 1fr;
   }
 
-  .chat-side-bar-md {
+  .chatSideBarMd {
     display: block;
   }
 }

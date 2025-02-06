@@ -1,9 +1,20 @@
-.dropdown-parent {
+.header {
+  font-size: 2rem;
+  height: 100%;
+  grid-column: span 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 30px;
+  border-bottom: 1px solid whitesmoke;
+}
+
+.dropdownParent {
   position: relative;
   cursor: pointer;
 }
 
-.dropdown-background {
+.dropdownBackground {
   background-color: rgba(255, 255, 255, 0.192);
   position: absolute;
   top: 0;
@@ -12,7 +23,7 @@
   right: 0;
 }
 
-.dropdown-list {
+.dropdownList {
   padding: 20px;
   border-radius: 20px;
   background-color: rgb(36, 36, 36);
@@ -23,11 +34,11 @@
   cursor: default;
 }
 
-.dropdown-list li {
+.dropdownList li {
   font-size: 1.25rem;
   cursor: pointer;
 }
 
-.dropdown-list li:hover {
+.dropdownList li:hover {
   opacity: 0.5;
 }

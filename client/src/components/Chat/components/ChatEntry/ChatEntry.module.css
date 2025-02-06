@@ -1,0 +1,17 @@
+.chatEntry {
+  border: 1px solid whitesmoke;
+  border-radius: 5px 0px 0px 5px;
+  margin-left: 5px;
+  margin-bottom: 5px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.chatEntry:hover {
+  opacity: 0.5;
+}
+
+.chatName {
+  font-size: 1.2rem;
+  font-weight: bold;
+}

@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom"
 import style from "./login.module.css"
-import { useContext, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { ServiceContext } from "../../services/serviceContext"
 import { GlobalContext } from "../../contexts/globalContext"
 
@@ -10,6 +10,11 @@ export default function Login(){
     
     const globalContext = useContext(GlobalContext)
     const authServices = useContext(ServiceContext).authService
+
+    useEffect(() => {
+        if(globalContext.user)
+            navigate("/")
+    },[])
 
     const usernameField = useRef(null)
     const passwordField = useRef(null)
