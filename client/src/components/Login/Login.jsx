@@ -2,11 +2,13 @@ import { Link, useNavigate } from "react-router-dom"
 import style from "./login.module.css"
 import { useContext, useRef, useState } from "react"
 import { ServiceContext } from "../../services/serviceContext"
+import { GlobalContext } from "../../contexts/globalContext"
 
-export default function Login(props){
+export default function Login(){
 
     const navigate = useNavigate()
     
+    const globalContext = useContext(GlobalContext)
     const authServices = useContext(ServiceContext).authService
 
     const usernameField = useRef(null)
@@ -23,7 +25,7 @@ export default function Login(props){
         .then(res => res.json())
         .then(res=> {
             sessionStorage.setItem("user", JSON.stringify(res))
-            props.setUser(res)
+            globalContext.setUser(res)
             setShowError(false)
             navigate("/")
         })

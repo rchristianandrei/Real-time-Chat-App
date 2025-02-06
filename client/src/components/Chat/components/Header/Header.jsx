@@ -1,9 +1,15 @@
 import { useContext, useState } from "react"
 import "./Header.css"
+import { GlobalContext } from "../../../../contexts/globalContext"
 
-export default function Header(props){
+export default function Header(){
 
+    const globalContext = useContext(GlobalContext)
     const [showDropdown, setShowDropdown] = useState(false)
+
+    function onLogout(){
+        globalContext.setUser(null)
+    }
 
     return(
         <>
@@ -11,11 +17,11 @@ export default function Header(props){
                 <div>Real-time Chat App</div>
                 {showDropdown && <div className="dropdown-background" onClick={() => setShowDropdown(false)}></div>}
                 <div className="dropdown-parent" onClick={() => {setShowDropdown(true)}}>
-                    <span>{props.user.displayName}</span>
+                    {globalContext.user && <span>{globalContext.user.displayName}</span>}
                     {showDropdown && 
                     <ul className="dropdown-list">
                         <li>Profile</li>
-                        <li>Logout</li>
+                        <li onClick={onLogout}>Logout</li>
                     </ul>}
                 </div>
             </div>
