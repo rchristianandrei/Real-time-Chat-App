@@ -1,7 +1,7 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import "./Header.css"
 
-export default function Header(){
+export default function Header(props){
 
     const [showDropdown, setShowDropdown] = useState(false)
 
@@ -11,7 +11,7 @@ export default function Header(){
                 <div>Real-time Chat App</div>
                 {showDropdown && <div className="dropdown-background" onClick={() => setShowDropdown(false)}></div>}
                 <div className="dropdown-parent" onClick={() => {setShowDropdown(true)}}>
-                    <span>Username</span>
+                    <span>{props.user.displayName}</span>
                     {showDropdown && 
                     <ul className="dropdown-list">
                         <li>Profile</li>

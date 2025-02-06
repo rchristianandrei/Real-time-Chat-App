@@ -1,10 +1,13 @@
 import { Link, useNavigate } from "react-router-dom"
 import style from "./login.module.css"
-import { useRef, useState } from "react"
+import { useContext, useRef, useState } from "react"
+import { ServiceContext } from "../../services/serviceContext"
 
-export default function Login(){
+export default function Login(props){
 
     const navigate = useNavigate()
+    
+    const authServices = useContext(ServiceContext).authService
 
     const usernameField = useRef(null)
     const passwordField = useRef(null)
@@ -16,21 +19,32 @@ export default function Login(){
         const username = usernameField.current.value
         const password = passwordField.current.value
         
-        fetch("http://localhost:3000/api/auth/login", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({username: username, password: password})
-        }).then(res => res.json())
-        .then(res => {
-            sessionStorage.setItem("user", res)
+        authServices.login(username, password)
+        .then(res => res.json())
+        .then(res=> {
+            sessionStorage.setItem("user", JSON.stringify(res))
+            props.setUser(res)
             setShowError(false)
             navigate("/")
         })
         .catch(reason => {
             setShowError(true)
         })
+        // fetch("http://localhost:3000/api/auth/login", {
+        //     method: "POST",
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({username: username, password: password})
+        // }).then(res => res.json())
+        // .then(res => {
+        //     sessionStorage.setItem("user", res)
+        //     setShowError(false)
+        //     navigate("/")
+        // })
+        // .catch(reason => {
+        //     setShowError(true)
+        // })
     }
 
     return(<>
