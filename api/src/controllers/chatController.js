@@ -14,7 +14,27 @@ router.get("/", authGuard(), async (req, res) => {
 
   try {
     const chats = await Chat.find({ members: user.id });
-    return res.status(200).send(chats);
+
+    const newChats = [];
+
+    for (let i = 0; i < chats.length; i++) {
+      const temp = chats[i].members.find((v) => !v.equals(user.id));
+      const target = await User.findById(temp);
+      const message = await Message.findOne({ chatId: chats[i].id })
+        .sort({ createdAt: -1 })
+        .limit(1);
+
+      newChats.push({
+        id: chats[i].id,
+        displayName: target.displayName,
+        sender: message.sender.equals(user.id)
+          ? user.displayName
+          : target.displayName,
+        message: message.message,
+      });
+    }
+
+    return res.status(200).send(newChats);
   } catch (e) {
     console.log(e);
     return res.sendStatus(400);

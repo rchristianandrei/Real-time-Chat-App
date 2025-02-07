@@ -15,7 +15,6 @@ export default function SideBar(){
         services.getAllChat()
         .then(res => res.json())
         .then(res => {
-            console.log(res)
             setChats(res)
         })
         .catch(reason => console.log(reason))
