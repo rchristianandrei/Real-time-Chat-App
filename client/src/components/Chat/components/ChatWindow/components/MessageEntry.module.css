@@ -1,0 +1,22 @@
+.parent {
+  margin: 5px 0px 5px 0px;
+  padding: 5px;
+}
+
+.sender {
+  padding-left: 5px;
+}
+
+.alignLeft {
+  text-align: end;
+}
+
+.messageBox {
+  flex: 1;
+}
+
+.message {
+  border: 1px solid whitesmoke;
+  border-radius: 5px;
+  padding: 5px 10px;
+}

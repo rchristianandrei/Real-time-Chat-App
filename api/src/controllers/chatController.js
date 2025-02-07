@@ -1,4 +1,5 @@
 import { Router } from "express";
+import mongoose from "mongoose";
 
 import authGuard from "../middlewares/authGuard.js";
 
@@ -41,19 +42,46 @@ router.get("/", authGuard(), async (req, res) => {
   }
 });
 
-router.get("/messages", authGuard(), async (req, res) => {
+router.get("/messages/:id", authGuard(), async (req, res) => {
   const user = req.user;
-  const { chatId } = req.body;
+  const chatId = req.params.id;
+
   try {
     const chat = await Chat.findById(chatId);
 
+    if (!chat.members.find((v) => v.toString() === user.id))
+      return res.sendStatus(401);
+
+    const members = [];
+    for (let i = 0; i < chat.members.length; i++) {
+      members.push(await User.findById(chat.members[i]));
+    }
+
     if (!chat) return res.sendStatus(404);
 
-    const messages = await Message.find({ chatId: chat.id });
-    console.log(messages);
-    return res.status(200).send(messages);
+    const messages = await Message.find({ chatId: chat.id }).sort({
+      createdAt: -1,
+    });
+
+    const data = {
+      chatId: chatId,
+      messages: [],
+    };
+    for (let i = 0; i < messages.length; i++) {
+      const sender = members.find(
+        (v) => v.id === messages[i].sender.toString()
+      );
+
+      data.messages.push({
+        you: user.id === sender.id,
+        sender: sender.displayName,
+        content: messages[i].message,
+      });
+    }
+
+    return res.status(200).send(data);
   } catch (e) {
-    return res.sendStatus(500);
+    return res.sendStatus(400);
   }
 });
 
