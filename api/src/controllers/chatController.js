@@ -89,10 +89,12 @@ router.post("/", authGuard(), async (req, res) => {
   const user = req.user;
   const { chatId, recepientId, message } = req.body;
 
+  if (!chatId && !recepientId) return res.sendStatus(400);
+
   try {
     // Verify recipient
     const receiver = await User.findById(recepientId);
-    if (!receiver)
+    if (!chatId && !recepientId)
       return res.status(400).send({ message: "user does not exist" });
 
     // Verify Chat Id

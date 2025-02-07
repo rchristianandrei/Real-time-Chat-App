@@ -79,7 +79,7 @@ export default function Register(){
 
                 <div className={style.buttons}>
                     <button className={`${style.button} ${style.primary}`}>Sign Up</button>
-                    <Link to="/login"><button className={`${style.button} ${style.secondary}`}>Login</button></Link>
+                    <button className={`${style.button} ${style.secondary}`}><Link to="/login">Login</Link></button>
                 </div>
             </form>
         </div>

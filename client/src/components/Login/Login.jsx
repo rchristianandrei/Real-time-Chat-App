@@ -37,21 +37,6 @@ export default function Login(){
         .catch(reason => {
             setShowError(true)
         })
-        // fetch("http://localhost:3000/api/auth/login", {
-        //     method: "POST",
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({username: username, password: password})
-        // }).then(res => res.json())
-        // .then(res => {
-        //     sessionStorage.setItem("user", res)
-        //     setShowError(false)
-        //     navigate("/")
-        // })
-        // .catch(reason => {
-        //     setShowError(true)
-        // })
     }
 
     return(<>
@@ -74,7 +59,7 @@ export default function Login(){
                 </p>}
 
                 <div className={style.buttons}>
-                    <button className={`${style.button} ${style.primary}`}>Sign In</button>
+                    <button type="submit" className={`${style.button} ${style.primary}`}>Sign In</button>
                     <button className={`${style.button} ${style.secondary}`}><Link to="/register">Register</Link></button>
                 </div>
             </form>
