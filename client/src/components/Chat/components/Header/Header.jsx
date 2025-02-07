@@ -17,15 +17,17 @@ export default function Header(){
         <>
             <div className={style.header}>
                 <div>Real-time Chat App</div>
-                {showDropdown && <div className={style.dropdownBackground} onClick={() => setShowDropdown(false)}></div>}
                 <div className={style.dropdownParent} onClick={() => {setShowDropdown(true)}}>
                     {globalContext.user && <span>{globalContext.user.displayName}</span>}
-                    {showDropdown && 
+                </div>
+
+                {showDropdown && 
+                <div className={style.dropdownBackground} onClick={() => setShowDropdown(false)}>
                     <ul className={style.dropdownList}>
                         <li>Profile</li>
                         <li onClick={onLogout}>Logout</li>
-                    </ul>}
-                </div>
+                    </ul>
+                </div>}
             </div>
         </>
     )

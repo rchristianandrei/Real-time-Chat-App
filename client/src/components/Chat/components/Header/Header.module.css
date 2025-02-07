@@ -10,7 +10,6 @@
 }
 
 .dropdownParent {
-  position: relative;
   cursor: pointer;
 }
 
@@ -21,6 +20,9 @@
   bottom: 0;
   left: 0;
   right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .dropdownList {
@@ -28,9 +30,6 @@
   border-radius: 20px;
   background-color: rgb(36, 36, 36);
   border: 1px solid whitesmoke;
-  position: absolute;
-  right: 0;
-  bottom: -1;
   cursor: default;
 }
 
