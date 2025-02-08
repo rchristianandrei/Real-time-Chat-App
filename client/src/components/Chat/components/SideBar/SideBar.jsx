@@ -4,14 +4,37 @@ import ChatList from "../ChatList/ChatList"
 import SearchResult from "../SearchResult/SearchResult"
 import { ServiceContext } from "../../../../services/serviceContext"
 import { GlobalContext } from "../../../../contexts/globalContext"
+import { WebSocketContext } from "../../../../contexts/webSocketContext"
 
 export default function SideBar(){
 
     const globalContext = useContext(GlobalContext)
+    const wsContext = useContext(WebSocketContext)
     const services = useContext(ServiceContext).chatService
     
     const [showSearch, setShowResult] = useState(false)
     const [chats, setChats] = useState([])
+
+    // Sub to websocket message
+    useEffect(() => {
+        if(wsContext.get().find(v =>  v === delegate)) return
+        wsContext.add(delegate)
+
+        return () => {
+            wsContext.remove(delegate)
+        }
+    }, [])
+
+    function delegate(data){
+        if(data.type !== "chat") return
+        
+        services.getAllChat()
+        .then(res => res.json())
+        .then(res => {
+            setChats(res)
+        })
+        .catch(reason => console.log(reason))
+    }
 
     useEffect(() => {
         if(!globalContext.user) return

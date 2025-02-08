@@ -1,8 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import {ServiceContext, serviceBuilder} from "./services/serviceContext";
 import { GlobalContext } from "./contexts/globalContext";
+import { WebSocketContext, wsMethods } from "./contexts/webSocketContext";
 
 import Register from "./components/Register/Register";
 import Login from "./components/Login/Login"
@@ -22,12 +23,15 @@ function App() {
       ws.send(JSON.stringify({type: "register", id:userObj.id}))
     }
     ws.onmessage = function(ev) {
-      console.log(JSON.parse(ev.data))
+      wsMethods.get().forEach(element => {
+        element(JSON.parse(ev.data))
+      });
     }
     
   },[user])
 
   return (
+    <WebSocketContext.Provider value={wsMethods}>
     <ServiceContext.Provider value={serviceBuilder}>
     <GlobalContext.Provider value = {{user, setUser}}>
       <BrowserRouter>
@@ -39,6 +43,7 @@ function App() {
       </BrowserRouter>
     </GlobalContext.Provider>
     </ServiceContext.Provider>
+    </WebSocketContext.Provider>
   )
 }
 

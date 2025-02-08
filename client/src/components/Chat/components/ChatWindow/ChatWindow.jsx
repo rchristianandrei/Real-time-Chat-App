@@ -5,9 +5,11 @@ import style from "./ChatWindow.module.css"
 import { ChatContext } from "../../../../contexts/chatContext"
 import MessageEntry from "./components/MessageEntry"
 import { ServiceContext } from "../../../../services/serviceContext"
+import { WebSocketContext } from "../../../../contexts/webSocketContext"
 
 export default function ChatWindow(){
 
+    const wsContext = useContext(WebSocketContext)
     const chatService = useContext(ServiceContext).chatService
     const chatContext = useContext(ChatContext)
 
@@ -16,11 +18,31 @@ export default function ChatWindow(){
     const messageBox = useRef(null)
 
     useEffect(() => {
+        return () => {
+            if(!wsContext.get().find(v =>  v === delegate)) return
+            wsContext.remove(delegate)
+        }
+    }, [])
+
+    function delegate(data){
+        if(data.type !== "chat") return
+
+        loadSelectedChat()
+    }
+
+    useEffect(() => {
+        if(wsContext.get().find(v =>  v === delegate)) return
+        wsContext.add(delegate)
+
+        loadSelectedChat()
+    }, [chatContext.selectedChat])
+
+    function loadSelectedChat(){
         if(!chatContext.selectedChat) return
         chatService.getAllMessages(chatContext.selectedChat)
         .then(res => res.json())
         .then(res => setMessages(res.messages))
-    }, [chatContext.selectedChat])
+    }
 
     function onSendMessage(){
         if(!chatContext.selectedChat) return
