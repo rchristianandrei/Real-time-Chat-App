@@ -19,7 +19,12 @@ router.post("/login", async (req, res) => {
   const token = jwt.sign({ id: user.id }, key, { expiresIn: "1h" });
   return res
     .status(200)
-    .send({ username: username, displayName: user.displayName, token: token });
+    .send({
+      id: user.id,
+      username: username,
+      displayName: user.displayName,
+      token: token,
+    });
 });
 
 router.post("/register", async (req, res) => {

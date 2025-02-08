@@ -30,8 +30,6 @@ export default function ChatWindow(){
         if(!content) return
 
         chatService.sendMessage(chatContext.selectedChat, null, content)
-        .then(res => res.json())
-        .then(res => console.log(res))
         .catch(reason => console.log(reason))
     }
 

@@ -3,6 +3,7 @@ import passport from "passport";
 import cors from "cors";
 import mongoose from "mongoose";
 
+import { createWebSocketServer } from "./websocket.js";
 import routes from "./routes.js";
 
 import "./auth/jwt-strategy.js";
@@ -27,6 +28,9 @@ app.use(
     origin: "http://localhost:5173",
   })
 );
+
+// WS
+createWebSocketServer();
 
 app.use(routes);
 

@@ -3,22 +3,26 @@ import style from "./SideBar.module.css"
 import ChatList from "../ChatList/ChatList"
 import SearchResult from "../SearchResult/SearchResult"
 import { ServiceContext } from "../../../../services/serviceContext"
+import { GlobalContext } from "../../../../contexts/globalContext"
 
 export default function SideBar(){
 
+    const globalContext = useContext(GlobalContext)
     const services = useContext(ServiceContext).chatService
     
     const [showSearch, setShowResult] = useState(false)
     const [chats, setChats] = useState([])
 
     useEffect(() => {
+        if(!globalContext.user) return
+
         services.getAllChat()
         .then(res => res.json())
         .then(res => {
             setChats(res)
         })
         .catch(reason => console.log(reason))
-    }, [])
+    }, [globalContext.user])
 
     function onSearchChange(e){
        setShowResult(String(e.target.value).length > 0)

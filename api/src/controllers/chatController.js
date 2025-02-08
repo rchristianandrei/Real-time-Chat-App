@@ -1,7 +1,8 @@
 import { Router } from "express";
-import mongoose from "mongoose";
 
 import authGuard from "../middlewares/authGuard.js";
+
+import { users } from "../websocket.js";
 
 import { User } from "../database/user.js";
 import { Chat } from "../database/chat.js";
@@ -113,6 +114,17 @@ router.post("/", authGuard(), async (req, res) => {
     });
 
     await newMessage.save();
+
+    // Announce new message to chat members
+    for (let i = 0; i < chatModel.members.length; i++) {
+      const memberId = chatModel.members[i];
+
+      const ws = users.get(memberId.toString());
+
+      if (!ws) continue;
+
+      ws.send(JSON.stringify({ type: "chat", message: "New Message!" }));
+    }
 
     return res.status(201).send({
       message: "successfully sent message",
