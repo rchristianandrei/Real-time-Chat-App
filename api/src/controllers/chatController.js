@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import authGuard from "../middlewares/authGuard.js";
 
-import { users } from "../websocket.js";
+import { users } from "../servers/websocket.js";
 
 import { User } from "../database/user.js";
 import { Chat } from "../database/chat.js";

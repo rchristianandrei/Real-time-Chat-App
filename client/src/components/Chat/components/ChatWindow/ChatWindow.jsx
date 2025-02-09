@@ -52,7 +52,13 @@ export default function ChatWindow(){
         if(!content) return
 
         chatService.sendMessage(chatContext.selectedChat, null, content)
+        .then(res => messageBox.current.value = "")
         .catch(reason => console.log(reason))
+    }
+
+    function onKeyDown(e){
+        if(e.key !== "Enter") return
+        onSendMessage()
     }
 
     return(
@@ -63,7 +69,7 @@ export default function ChatWindow(){
             </div>
         </div>
         <div className={style.chatBar}>
-            <input className={style.messageInput} type="text" placeholder="type..." ref={messageBox}/>
+            <input onKeyDown={onKeyDown} className={style.messageInput} type="text" placeholder="type..." ref={messageBox}/>
             <button onClick={onSendMessage} className={style.sendButton}>Send</button>
         </div>
     </div>
