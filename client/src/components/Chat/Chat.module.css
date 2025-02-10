@@ -1,23 +1,33 @@
 .parent {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 100px 1fr;
+  display: flex;
+  flex-direction: column;
   height: 100vh;
+}
+
+.header {
+  height: 100px;
+}
+
+.chat {
+  flex: 1;
+  display: flex;
+  position: relative;
+}
+
+.flex1 {
+  flex: 1;
 }
 
 .chatSideBar {
   height: 100%;
   border-right: 1px solid whitesmoke;
-  display: none;
+  display: block;
 }
 
-@media only screen and (min-width: 768px) {
-  .parentMd {
-    grid-template-columns: 300px 1fr;
-    grid-template-rows: 100px 1fr;
-  }
-
-  .chatSideBarMd {
-    display: block;
-  }
+.mobileChatWindow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }

@@ -7,7 +7,7 @@ import MessageEntry from "./components/MessageEntry"
 import { ServiceContext } from "../../../../services/serviceContext"
 import { WebSocketContext } from "../../../../contexts/webSocketContext"
 
-export default function ChatWindow(){
+export default function ChatWindow(props){
 
     const wsContext = useContext(WebSocketContext)
     const chatService = useContext(ServiceContext).chatService
@@ -61,10 +61,14 @@ export default function ChatWindow(){
         onSendMessage()
     }
 
+    function back(){
+        chatContext.setSelectedChat(null)
+    }
+
     return(
     <div className={style.parent}>
         <div className={style.header}>
-            <button className={style.backButton}>Back</button>
+            {props.isMobileView && <button className={style.backButton} onClick={back}>Back</button>}
             <strong>{chat && chat.name}</strong>
         </div>
         <div className={style.chatAreaParent}>

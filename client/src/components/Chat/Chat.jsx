@@ -17,6 +17,18 @@ export default function Chat(){
     const globalContext = useContext(GlobalContext)
 
     const [selectedChat, setSelectedChat] = useState(null)
+    const [isMobileView, setIsMobileView] = useState(false)
+
+    useEffect(() => {
+        function resizeDelegate(){
+            setIsMobileView(window.innerWidth <= 768)
+        }
+        resizeDelegate()
+        window.addEventListener("resize", resizeDelegate)
+        return () => {
+            window.removeEventListener("resize", resizeDelegate)
+        }
+    }, [])
 
     useEffect(() => {
         if (!globalContext.user) navigate("/login")
@@ -25,12 +37,14 @@ export default function Chat(){
     return(
         <ChatContext.Provider value={{selectedChat, setSelectedChat}}>
             <div className={`${style.parent} ${style.parentMd}`}>
-                <Header></Header>
-                <div className={`${style.chatSideBar} ${style.chatSideBarMd}`}>
-                    <SideBar></SideBar>
-                </div>
-                <div>
-                    <ChatWindow></ChatWindow>
+                <div className={style.header}><Header></Header></div>
+                <div className={style.chat}>
+                    {!(isMobileView && selectedChat) &&<div className={`${style.chatSideBar} ${isMobileView && style.flex1}`}>
+                        <SideBar></SideBar>
+                    </div>}
+                    {(!isMobileView || selectedChat) && <div className={isMobileView ? style.mobileChatWindow : style.flex1}>
+                        <ChatWindow isMobileView={isMobileView}></ChatWindow>
+                    </div>}
                 </div>
             </div>
         </ChatContext.Provider>
