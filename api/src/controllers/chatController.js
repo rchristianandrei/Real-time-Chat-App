@@ -66,6 +66,7 @@ router.get("/messages/:id", authGuard(), async (req, res) => {
 
     const data = {
       chatId: chatId,
+      name: members.find((v) => v.id !== user.id).displayName,
       messages: [],
     };
     for (let i = 0; i < messages.length; i++) {

@@ -1,7 +1,24 @@
 .parent {
   display: grid;
-  grid-template-rows: 1fr 50px;
+  grid-template-rows: 50px 1fr 50px;
   height: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom: 1px solid whitesmoke;
+  position: relative;
+}
+
+.backButton {
+  position: absolute;
+  left: 5px;
+  cursor: pointer;
+  background-color: rgb(33, 135, 218);
+  padding: 7px;
+  border-radius: 5px;
 }
 
 .chatAreaParent {

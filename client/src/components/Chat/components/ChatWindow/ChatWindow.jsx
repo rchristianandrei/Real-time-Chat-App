@@ -13,7 +13,7 @@ export default function ChatWindow(){
     const chatService = useContext(ServiceContext).chatService
     const chatContext = useContext(ChatContext)
 
-    const [messages, setMessages] = useState([])
+    const [chat, setChat] = useState(null)
 
     const messageBox = useRef(null)
 
@@ -39,9 +39,9 @@ export default function ChatWindow(){
 
     function loadSelectedChat(){
         if(!chatContext.selectedChat) return
-        chatService.getAllMessages(chatContext.selectedChat)
+        chatService.getAllMessages(chatContext.selectedChat.id)
         .then(res => res.json())
-        .then(res => setMessages(res.messages))
+        .then(res => setChat(res))
     }
 
     function onSendMessage(){
@@ -51,7 +51,7 @@ export default function ChatWindow(){
         
         if(!content) return
 
-        chatService.sendMessage(chatContext.selectedChat, null, content)
+        chatService.sendMessage(chatContext.selectedChat.id, null, content)
         .then(res => messageBox.current.value = "")
         .catch(reason => console.log(reason))
     }
@@ -63,9 +63,13 @@ export default function ChatWindow(){
 
     return(
     <div className={style.parent}>
+        <div className={style.header}>
+            <button className={style.backButton}>Back</button>
+            <strong>{chat && chat.name}</strong>
+        </div>
         <div className={style.chatAreaParent}>
             <div className={style.chatArea}>
-                {messages.map((v, i) => <MessageEntry key={i} message={v}></MessageEntry>)}
+                {chat && chat.messages.map((v, i) => <MessageEntry key={i} message={v}></MessageEntry>)}
             </div>
         </div>
         <div className={style.chatBar}>
