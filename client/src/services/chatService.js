@@ -18,6 +18,24 @@ function getAllChat() {
   });
 }
 
+function getChatByRecipient(id) {
+  const user = JSON.parse(sessionStorage.getItem("user"));
+
+  const header = user
+    ? {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      }
+    : {
+        "Content-Type": "application/json",
+      };
+
+  return fetch(`${host}/${id}`, {
+    method: "GET",
+    headers: header,
+  });
+}
+
 function getAllMessages(chatId) {
   const user = JSON.parse(sessionStorage.getItem("user"));
 
@@ -59,4 +77,4 @@ function sendMessage(chatId, recepientId, message) {
   });
 }
 
-export default { getAllChat, getAllMessages, sendMessage };
+export default { getAllChat, getAllMessages, getChatByRecipient, sendMessage };

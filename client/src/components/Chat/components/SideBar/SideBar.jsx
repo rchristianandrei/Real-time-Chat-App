@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import style from "./SideBar.module.css"
 import ChatList from "../ChatList/ChatList"
 import SearchResult from "../SearchResult/SearchResult"
@@ -10,9 +10,11 @@ export default function SideBar(){
 
     const globalContext = useContext(GlobalContext)
     const wsContext = useContext(WebSocketContext)
-    const services = useContext(ServiceContext).chatService
+    const chatServices = useContext(ServiceContext).chatService
+
+    const searchBox = useRef(null)
     
-    const [showSearch, setShowResult] = useState(false)
+    const [search, setSearch] = useState(null)
     const [chats, setChats] = useState([])
 
     // Sub to websocket message
@@ -28,7 +30,7 @@ export default function SideBar(){
     function delegate(data){
         if(data.type !== "chat") return
         
-        services.getAllChat()
+        chatServices.getAllChat()
         .then(res => res.json())
         .then(res => {
             setChats(res)
@@ -39,7 +41,7 @@ export default function SideBar(){
     useEffect(() => {
         if(!globalContext.user) return
 
-        services.getAllChat()
+        chatServices.getAllChat()
         .then(res => res.json())
         .then(res => {
             setChats(res)
@@ -48,19 +50,19 @@ export default function SideBar(){
     }, [globalContext.user])
 
     function onSearchChange(e){
-       setShowResult(String(e.target.value).length > 0)
+       setSearch(e.target.value.toString())
     }
 
     return(
     <>
         <div className={style.parent}>
             <div className={style.searchBar}>
-                <input onChange={onSearchChange} className={style.searchField} type="text" placeholder="Search people..." />
+                <input ref={searchBox} onChange={onSearchChange} className={style.searchField} type="text" placeholder="Search people..." />
                 <button className={style.searchButton}>Find</button>
             </div>
 
-            {showSearch 
-            ? <SearchResult></SearchResult> 
+            {search 
+            ? <SearchResult search={{search, setSearch}} searchBox={searchBox}></SearchResult> 
             : <ChatList chats={chats}></ChatList>}
         </div>
     </>            

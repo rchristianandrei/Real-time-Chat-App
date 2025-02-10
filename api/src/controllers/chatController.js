@@ -87,6 +87,53 @@ router.get("/messages/:id", authGuard(), async (req, res) => {
   }
 });
 
+router.get("/:userId", authGuard(), async (req, res) => {
+  const user = req.user;
+  const userId = req.params.userId;
+
+  if (!userId) return sendStatus(400);
+
+  try {
+    const target = await User.findById(userId);
+
+    const chat = await Chat.findOne({ members: { $all: [user.id, userId] } });
+
+    const data = {
+      chatId: chat ? chat.id : null,
+      name: target.displayName,
+      messages: [],
+    };
+
+    if (chat) {
+      const members = [];
+      for (let i = 0; i < chat.members.length; i++) {
+        members.push(await User.findById(chat.members[i]));
+      }
+
+      const messages = await Message.find({ chatId: chat.id }).sort({
+        createdAt: -1,
+      });
+
+      for (let i = 0; i < messages.length; i++) {
+        const sender = members.find(
+          (v) => v.id.toString() === messages[i].sender.toString()
+        );
+
+        data.messages.push({
+          you: user.id === sender.id,
+          sender: sender.displayName,
+          content: messages[i].message,
+        });
+      }
+    }
+
+    return res.status(200).send(data);
+  } catch (e) {
+    console.log(e);
+    return res.sendStatus(500);
+  }
+});
+
 router.post("/", authGuard(), async (req, res) => {
   const user = req.user;
   const { chatId, recepientId, message } = req.body;

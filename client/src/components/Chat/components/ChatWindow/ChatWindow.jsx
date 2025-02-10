@@ -39,9 +39,17 @@ export default function ChatWindow(props){
 
     function loadSelectedChat(){
         if(!chatContext.selectedChat) return
-        chatService.getAllMessages(chatContext.selectedChat.id)
-        .then(res => res.json())
-        .then(res => setChat(res))
+
+        if(chatContext.selectedChat.id){
+            chatService.getAllMessages(chatContext.selectedChat.id)
+            .then(res => res.json())
+            .then(res => setChat(res))
+        }
+        else if(chatContext.selectedChat.recepientId){
+            chatService.getChatByRecipient(chatContext.selectedChat.recepientId)
+            .then(res => res.json())
+            .then(res => {console.log(res);setChat(res)})
+        }
     }
 
     function onSendMessage(){
@@ -51,7 +59,7 @@ export default function ChatWindow(props){
         
         if(!content) return
 
-        chatService.sendMessage(chatContext.selectedChat.id, null, content)
+        chatService.sendMessage(chatContext.selectedChat.id, chatContext.selectedChat.recepientId, content)
         .then(res => messageBox.current.value = "")
         .catch(reason => console.log(reason))
     }
