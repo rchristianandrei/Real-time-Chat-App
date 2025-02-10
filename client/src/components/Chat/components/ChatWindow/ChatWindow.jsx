@@ -2,15 +2,16 @@ import { useContext, useEffect, useRef, useState } from "react"
 
 import style from "./ChatWindow.module.css"
 
-import { ChatContext } from "../../../../contexts/chatContext"
 import MessageEntry from "./components/MessageEntry"
-import { ServiceContext } from "../../../../services/serviceContext"
+
+import { getAllMessages, getChatByRecipient, sendMessage } from "../../../../services/chatService"
+
+import { ChatContext } from "../../../../contexts/chatContext"
 import { WebSocketContext } from "../../../../contexts/webSocketContext"
 
 export default function ChatWindow(props){
 
     const wsContext = useContext(WebSocketContext)
-    const chatService = useContext(ServiceContext).chatService
     const chatContext = useContext(ChatContext)
 
     const [chat, setChat] = useState(null)
@@ -41,14 +42,14 @@ export default function ChatWindow(props){
         if(!chatContext.selectedChat) return
 
         if(chatContext.selectedChat.id){
-            chatService.getAllMessages(chatContext.selectedChat.id)
+            getAllMessages(chatContext.selectedChat.id)
             .then(res => res.json())
             .then(res => setChat(res))
         }
         else if(chatContext.selectedChat.recepientId){
-            chatService.getChatByRecipient(chatContext.selectedChat.recepientId)
+            getChatByRecipient(chatContext.selectedChat.recepientId)
             .then(res => res.json())
-            .then(res => {console.log(res);setChat(res)})
+            .then(res => setChat(res))
         }
     }
 
@@ -58,8 +59,8 @@ export default function ChatWindow(props){
         const content = messageBox.current.value
         
         if(!content) return
-
-        chatService.sendMessage(chatContext.selectedChat.id, chatContext.selectedChat.recepientId, content)
+        
+        sendMessage(chatContext.selectedChat.id, chatContext.selectedChat.recepientId, content)
         .then(res => messageBox.current.value = "")
         .catch(reason => console.log(reason))
     }

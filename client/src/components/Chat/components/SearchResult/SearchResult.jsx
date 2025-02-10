@@ -1,18 +1,18 @@
 import { useContext, useEffect, useState } from "react"
-import { ServiceContext } from "../../../../services/serviceContext"
+
 import ChatEntry from "../ChatEntry/ChatEntry"
+
 import { ChatContext } from "../../../../contexts/chatContext"
-import chatService from "../../../../services/chatService"
+import { findUsers } from "../../../../services/userService"
 
 export default function SearchResult(props){
 
     const chatContext = useContext(ChatContext)
-    const userService = useContext(ServiceContext).userService
 
     const [users, setUsers] = useState([])
 
     useEffect(() => {
-        userService.findUsers(props.search.search)
+        findUsers(props.search.search)
         .then(res => res.json())
         .then(res => setUsers(res))
     }, [props.search])

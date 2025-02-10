@@ -1,6 +1,6 @@
 const host = "http://localhost:3000/api/users";
 
-function findUsers(keyword) {
+export function findUsers(keyword) {
   const user = JSON.parse(sessionStorage.getItem("user"));
 
   const header = user

@@ -1,7 +1,9 @@
 import { Link, useNavigate } from "react-router-dom"
 import style from "./login.module.css"
 import { useContext, useEffect, useRef, useState } from "react"
-import { ServiceContext } from "../../services/serviceContext"
+
+import { login } from "../../services/authService"
+
 import { GlobalContext } from "../../contexts/globalContext"
 
 export default function Login(){
@@ -9,7 +11,6 @@ export default function Login(){
     const navigate = useNavigate()
     
     const globalContext = useContext(GlobalContext)
-    const authServices = useContext(ServiceContext).authService
 
     useEffect(() => {
         if(globalContext.user)
@@ -26,7 +27,7 @@ export default function Login(){
         const username = usernameField.current.value
         const password = passwordField.current.value
         
-        authServices.login(username, password)
+        login(username, password)
         .then(res => res.json())
         .then(res=> {
             sessionStorage.setItem("user", JSON.stringify(res))

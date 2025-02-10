@@ -1,6 +1,6 @@
 const host = "http://localhost:3000/api/auth";
 
-function login(username, password) {
+export function login(username, password) {
   return fetch(`${host}/login`, {
     method: "POST",
     headers: {
@@ -10,7 +10,7 @@ function login(username, password) {
   });
 }
 
-function register(username, displayName, password) {
+export function register(username, displayName, password) {
   return fetch(`${host}/register`, {
     method: "POST",
     headers: {

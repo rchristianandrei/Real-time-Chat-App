@@ -1,6 +1,6 @@
 const host = "http://localhost:3000/api/chat";
 
-function getAllChat() {
+export function getAllChat() {
   const user = JSON.parse(sessionStorage.getItem("user"));
 
   const header = user
@@ -18,7 +18,7 @@ function getAllChat() {
   });
 }
 
-function getChatByRecipient(id) {
+export function getChatByRecipient(id) {
   const user = JSON.parse(sessionStorage.getItem("user"));
 
   const header = user
@@ -36,7 +36,7 @@ function getChatByRecipient(id) {
   });
 }
 
-function getAllMessages(chatId) {
+export function getAllMessages(chatId) {
   const user = JSON.parse(sessionStorage.getItem("user"));
 
   const header = user
@@ -54,7 +54,7 @@ function getAllMessages(chatId) {
   });
 }
 
-function sendMessage(chatId, recepientId, message) {
+export function sendMessage(chatId, recepientId, message) {
   const user = JSON.parse(sessionStorage.getItem("user"));
 
   const header = user

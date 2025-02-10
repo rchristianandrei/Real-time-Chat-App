@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import {ServiceContext, serviceBuilder} from "./services/serviceContext";
 import { GlobalContext } from "./contexts/globalContext";
 import { WebSocketContext, wsMethods } from "./contexts/webSocketContext";
 
@@ -32,7 +31,6 @@ function App() {
 
   return (
     <WebSocketContext.Provider value={wsMethods}>
-    <ServiceContext.Provider value={serviceBuilder}>
     <GlobalContext.Provider value = {{user, setUser}}>
       <BrowserRouter>
         <Routes>
@@ -42,7 +40,6 @@ function App() {
         </Routes>
       </BrowserRouter>
     </GlobalContext.Provider>
-    </ServiceContext.Provider>
     </WebSocketContext.Provider>
   )
 }

@@ -1,7 +1,16 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import style from "./Register.module.css"
 
+import { register } from "../../services/authService"
+
 export default function Register(){
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if(globalContext.user)
+            navigate("/")
+    },[])
 
     function onSubmit(event) {
         event.preventDefault()
@@ -35,21 +44,7 @@ export default function Register(){
 
         if(!valid) return
 
-        const user = {
-            username: username,
-            displayName: displayName,
-            password: password
-        }
-
-        fetch("http://localhost:3000/api/auth/register", {
-            method: "post",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(user)
-        }).then(res => res.json())
-        .then(res =>console.log(res))
-        .catch(reason => console.log(reason))
+        register(username, displayName, password)
     }
 
     return(<>

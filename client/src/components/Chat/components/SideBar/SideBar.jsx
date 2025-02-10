@@ -2,15 +2,15 @@ import { useContext, useEffect, useRef, useState } from "react"
 import style from "./SideBar.module.css"
 import ChatList from "../ChatList/ChatList"
 import SearchResult from "../SearchResult/SearchResult"
-import { ServiceContext } from "../../../../services/serviceContext"
+
 import { GlobalContext } from "../../../../contexts/globalContext"
 import { WebSocketContext } from "../../../../contexts/webSocketContext"
+import { getAllChat } from "../../../../services/chatService"
 
 export default function SideBar(){
 
     const globalContext = useContext(GlobalContext)
     const wsContext = useContext(WebSocketContext)
-    const chatServices = useContext(ServiceContext).chatService
 
     const searchBox = useRef(null)
     
@@ -19,6 +19,11 @@ export default function SideBar(){
 
     // Sub to websocket message
     useEffect(() => {
+        function delegate(data){
+            if(data.type !== "chat") return
+            getChat()
+        }
+
         if(wsContext.get().find(v =>  v === delegate)) return
         wsContext.add(delegate)
 
@@ -27,27 +32,20 @@ export default function SideBar(){
         }
     }, [])
 
-    function delegate(data){
-        if(data.type !== "chat") return
-        
-        chatServices.getAllChat()
+    useEffect(() => {
+        if(!globalContext.user) return
+
+        getChat()
+    }, [globalContext.user])
+
+    function getChat(){
+        getAllChat()
         .then(res => res.json())
         .then(res => {
             setChats(res)
         })
         .catch(reason => console.log(reason))
     }
-
-    useEffect(() => {
-        if(!globalContext.user) return
-
-        chatServices.getAllChat()
-        .then(res => res.json())
-        .then(res => {
-            setChats(res)
-        })
-        .catch(reason => console.log(reason))
-    }, [globalContext.user])
 
     function onSearchChange(e){
        setSearch(e.target.value.toString())
