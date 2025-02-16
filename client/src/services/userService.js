@@ -1,4 +1,4 @@
-const host = "http://localhost:3000/api/users";
+const host = `${import.meta.env.VITE_APP_API_ENPOINT}/users`;
 
 export function findUsers(keyword) {
   const user = JSON.parse(sessionStorage.getItem("user"));

@@ -5,25 +5,17 @@ import style from "./ChatWindow.module.css"
 import MessageEntry from "./components/MessageEntry"
 
 import { getAllMessages, getChatByRecipient, sendMessage } from "../../../../services/chatService"
+import { subscribeToMessage, unsubscribeToMessage } from "../../../../services/wsServices"
 
 import { ChatContext } from "../../../../contexts/chatContext"
-import { WebSocketContext } from "../../../../contexts/webSocketContext"
 
 export default function ChatWindow(props){
 
-    const wsContext = useContext(WebSocketContext)
     const chatContext = useContext(ChatContext)
 
     const [chat, setChat] = useState(null)
 
     const messageBox = useRef(null)
-
-    useEffect(() => {
-        return () => {
-            if(!wsContext.get().find(v =>  v === delegate)) return
-            wsContext.remove(delegate)
-        }
-    }, [])
 
     function delegate(data){
         if(data.type !== "chat") return
@@ -32,10 +24,12 @@ export default function ChatWindow(props){
     }
 
     useEffect(() => {
-        if(wsContext.get().find(v =>  v === delegate)) return
-        wsContext.add(delegate)
-
+        subscribeToMessage(delegate)
         loadSelectedChat()
+
+        return () => {
+            unsubscribeToMessage(delegate)
+        }
     }, [chatContext.selectedChat])
 
     function loadSelectedChat(){

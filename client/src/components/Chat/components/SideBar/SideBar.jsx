@@ -3,14 +3,14 @@ import style from "./SideBar.module.css"
 import ChatList from "../ChatList/ChatList"
 import SearchResult from "../SearchResult/SearchResult"
 
-import { GlobalContext } from "../../../../contexts/globalContext"
-import { WebSocketContext } from "../../../../contexts/webSocketContext"
 import { getAllChat } from "../../../../services/chatService"
+import { subscribeToMessage, unsubscribeToMessage } from "../../../../services/wsServices"
+
+import { GlobalContext } from "../../../../contexts/globalContext"
 
 export default function SideBar(){
 
     const globalContext = useContext(GlobalContext)
-    const wsContext = useContext(WebSocketContext)
 
     const searchBox = useRef(null)
     
@@ -24,11 +24,10 @@ export default function SideBar(){
             getChat()
         }
 
-        if(wsContext.get().find(v =>  v === delegate)) return
-        wsContext.add(delegate)
+        subscribeToMessage(delegate)
 
         return () => {
-            wsContext.remove(delegate)
+            unsubscribeToMessage(delegate)
         }
     }, [])
 

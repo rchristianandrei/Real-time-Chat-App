@@ -1,4 +1,4 @@
-const host = "http://localhost:3000/api/chat";
+const host = `${import.meta.env.VITE_APP_API_ENPOINT}/chat`;
 
 export function getAllChat() {
   const user = JSON.parse(sessionStorage.getItem("user"));

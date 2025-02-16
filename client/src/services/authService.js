@@ -1,4 +1,4 @@
-const host = "http://localhost:3000/api/auth";
+const host = `${import.meta.env.VITE_APP_API_ENPOINT}/auth`;
 
 export function login(username, password) {
   return fetch(`${host}/login`, {
