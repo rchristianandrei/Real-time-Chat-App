@@ -18,7 +18,6 @@ wss.on("connection", (ws) => {
       users.set(user.id.toString(), ws);
 
       ws.on("close", () => {
-        console.log("gone");
         users.delete(user.id.toString());
       });
     });
