@@ -5,6 +5,7 @@ import { useContext, useEffect, useRef, useState } from "react"
 import { login } from "../../services/authService"
 
 import { GlobalContext } from "../../contexts/globalContext"
+import { setUser } from "../../services/sessionStorageServices"
 
 export default function Login(){
 
@@ -30,7 +31,7 @@ export default function Login(){
         login(username, password)
         .then(res => res.json())
         .then(res=> {
-            sessionStorage.setItem("user", JSON.stringify(res))
+            setUser(res)
             globalContext.setUser(res)
             setShowError(false)
             navigate("/")

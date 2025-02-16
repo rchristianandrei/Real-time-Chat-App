@@ -2,6 +2,7 @@ import { useContext, useState } from "react"
 
 import style from "./Header.module.css"
 import { GlobalContext } from "../../../../contexts/globalContext"
+import { removeUser } from "../../../../services/sessionStorageServices"
 
 export default function Header(){
 
@@ -10,7 +11,7 @@ export default function Header(){
 
     function onLogout(){
         globalContext.setUser(null)
-        sessionStorage.removeItem("user")
+        removeUser()
     }
 
     return(

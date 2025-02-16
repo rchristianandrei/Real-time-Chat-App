@@ -7,10 +7,11 @@ import { WebSocketContext, wsMethods } from "./contexts/webSocketContext";
 import Register from "./components/Register/Register";
 import Login from "./components/Login/Login"
 import Chat from "./components/Chat/Chat"
+import { getUser } from "./services/sessionStorageServices";
 
 function App() {
 
-  const userObj = JSON.parse(sessionStorage.getItem("user"))
+  const userObj = getUser()
   const [user, setUser] = userObj ? useState(userObj) : useState(null)
 
   useEffect(() => {
