@@ -16,8 +16,7 @@ function App() {
 
   useEffect(() => {
     if(!userObj) return
-
-    connectToWSS(userObj.id)
+    connectToWSS(userObj.token)
 
     return () => {
       disconnectToWSS()

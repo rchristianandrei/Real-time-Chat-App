@@ -1,13 +1,9 @@
 let ws = null;
 let delegates = [];
 
-export function connectToWSS(userId) {
+export function connectToWSS(token) {
   if (ws) return;
-  ws = new WebSocket(import.meta.env.VITE_APP_WS_ENPOINT);
-
-  ws.addEventListener("open", () => {
-    ws.send(JSON.stringify({ type: "register", id: userId }));
-  });
+  ws = new WebSocket(`${import.meta.env.VITE_APP_WS_ENPOINT}?token=${token}`);
 
   ws.addEventListener("message", (ev) => {
     delegates.forEach((element) => {

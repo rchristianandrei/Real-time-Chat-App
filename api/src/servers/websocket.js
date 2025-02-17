@@ -1,25 +1,38 @@
 import { WebSocketServer } from "ws";
+import jwt from "jsonwebtoken";
+import key from "../auth/secretKey.js";
 import { User } from "../database/user.js";
 
 export const users = new Map();
 
 const wss = new WebSocketServer({ port: 3001 });
 
-wss.on("connection", (ws) => {
-  ws.on("message", (rawData) => {
-    const data = JSON.parse(rawData.toString());
+wss.on("connection", (ws, req) => {
+  const raw = req.url.split("=");
 
-    if (data.type !== "register" || !data.id) return;
+  if (raw.length < 2) {
+    ws.close();
+    return;
+  }
 
-    if (users.get(data.id.toString())) return;
+  const token = raw[1];
 
-    User.findById(data.id.toString()).then((user) => {
-      if (!user) return;
-      users.set(user.id.toString(), ws);
+  try {
+    const id = jwt.verify(token, key).id;
 
-      ws.on("close", () => {
-        users.delete(user.id.toString());
-      });
+    if (users.get(id)) {
+      ws.close();
+      return;
+    }
+
+    users.set(id, ws);
+
+    ws.on("close", () => {
+      users.delete(id);
     });
-  });
+  } catch (e) {
+    console.log(e);
+    ws.close();
+    return;
+  }
 });
