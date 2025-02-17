@@ -1,7 +1,8 @@
 import { WebSocketServer } from "ws";
 import jwt from "jsonwebtoken";
-import key from "../auth/secretKey.js";
-import { User } from "../database/user.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export const users = new Map();
 
@@ -18,7 +19,7 @@ wss.on("connection", (ws, req) => {
   const token = raw[1];
 
   try {
-    const id = jwt.verify(token, key).id;
+    const id = jwt.verify(token, process.env.KEY).id;
 
     if (users.get(id)) {
       ws.close();
