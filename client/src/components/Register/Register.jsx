@@ -1,11 +1,14 @@
+import { useContext, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import style from "./Register.module.css"
 
+import {GlobalContext} from "../../contexts/globalContext"
 import { register } from "../../services/authService"
 
 export default function Register(){
 
     const navigate = useNavigate()
+    const globalContext = useContext(GlobalContext)
 
     useEffect(() => {
         if(globalContext.user)
